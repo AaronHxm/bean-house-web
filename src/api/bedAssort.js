@@ -1,16 +1,8 @@
 import request from '@/utils/request'
 
-export function getHouseInfo(params) {
-  return request({
-    url: 'api/beadHouseInfo',
-    method: 'get',
-    params
-  })
-}
-
 export function add(data) {
   return request({
-    url: 'api/beadHouseInfo',
+    url: 'api/bedAssort',
     method: 'post',
     data
   })
@@ -18,7 +10,7 @@ export function add(data) {
 
 export function del(ids) {
   return request({
-    url: 'api/beadHouseInfo/',
+    url: 'api/bedAssort/',
     method: 'delete',
     data: ids
   })
@@ -26,7 +18,7 @@ export function del(ids) {
 
 export function edit(data) {
   return request({
-    url: 'api/beadHouseInfo',
+    url: 'api/bedAssort',
     method: 'put',
     data
   })

@@ -7,23 +7,47 @@
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="养老院名称" prop="beadHouseName">
-            <el-input v-model="form.beadHouseName" style="width: 370px;" />
-          </el-form-item>
           <el-form-item label="院长名称" prop="deanName">
             <el-input v-model="form.deanName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="养老院评价" prop="beadHouseEvaluate">
-            <el-input v-model="form.beadHouseEvaluate" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="床位数" prop="bedNum">
             <el-input v-model="form.bedNum" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="联系电话" prop="beadPhone">
-            <el-input v-model="form.beadPhone" style="width: 370px;" />
+          <el-form-item label="养老院名称">
+            <el-input v-model="form.beanName" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院地址">
-            <el-input v-model="form.beadHouseAddress" style="width: 370px;" />
+          <el-form-item label="描述">
+            <el-input v-model="form.remarks" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院接待时间">
+            <el-input v-model="form.beanTime" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院电话">
+            <el-input v-model="form.beanTel" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院位置">
+            <el-input v-model="form.beanAddress" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院省">
+            <el-input v-model="form.beanProvince" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院市">
+            <el-input v-model="form.beanCity" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院区">
+            <el-input v-model="form.beanArea" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院医护数量">
+            <el-input v-model="form.nurseNum" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院描述">
+            <el-input v-model="form.beanDesc" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="养老院logo">
+            <el-input v-model="form.beanLogo" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="评价">
+            <el-input v-model="form.beanHouseEvaluate" style="width: 370px;" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -34,17 +58,24 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="beadHouseId" label="id" />
-        <el-table-column prop="beadHouseName" label="养老院名称" />
         <el-table-column prop="deanName" label="院长名称" />
-        <el-table-column prop="beadHouseEvaluate" label="养老院评价" />
         <el-table-column prop="bedNum" label="床位数" />
         <el-table-column prop="createBy" label="创建人" />
         <el-table-column prop="createTime" label="创建时间" />
         <el-table-column prop="updateBy" label="修改人" />
         <el-table-column prop="updateTime" label="修改时间" />
-        <el-table-column prop="beadPhone" label="联系电话" />
-        <el-table-column prop="beadHouseAddress" label="养老院地址" />
+        <el-table-column prop="beanName" label="养老院名称" />
+        <el-table-column prop="remarks" label="描述" />
+        <el-table-column prop="beanTime" label="养老院接待时间" />
+        <el-table-column prop="beanTel" label="养老院电话" />
+        <el-table-column prop="beanAddress" label="养老院位置" />
+        <el-table-column prop="beanProvince" label="养老院省" />
+        <el-table-column prop="beanCity" label="养老院市" />
+        <el-table-column prop="beanArea" label="养老院区" />
+        <el-table-column prop="nurseNum" label="养老院医护数量" />
+        <el-table-column prop="beanDesc" label="养老院描述" />
+        <el-table-column prop="beanLogo" label="养老院logo" />
+        <el-table-column prop="beanHouseEvaluate" label="评价" />
         <el-table-column v-if="checkPer(['admin','beadHouseInfo:edit','beadHouseInfo:del'])" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -68,13 +99,13 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 
-const defaultForm = { beadHouseId: null, beadHouseName: null, deanId: null, deanName: null, beadHouseEvaluate: null, bedNum: null, createBy: null, createTime: null, updateBy: null, updateTime: null, beadPhone: null, beadHouseAddress: null }
+const defaultForm = { deanId: null, deanName: null, bedNum: null, createBy: null, createTime: null, updateBy: null, updateTime: null, id: null, beanName: null, tenantId: null, status: null, remarks: null, beanTime: null, beanTel: null, beanAddress: null, lng: null, lat: null, beanProvince: null, beanCity: null, beanArea: null, nurseNum: null, beanDesc: null, beanLogo: null, beanHouseEvaluate: null }
 export default {
   name: 'BeadHouseInfo',
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '养老院管理', url: 'api/beadHouseInfo', idField: 'beadHouseId', sort: 'beadHouseId,desc', crudMethod: { ...crudBeadHouseInfo }})
+    return CRUD({ title: '养老院管理', url: 'api/beadHouseInfo', idField: 'id', sort: 'id,desc', crudMethod: { ...crudBeadHouseInfo }})
   },
   data() {
     return {
@@ -84,20 +115,11 @@ export default {
         del: ['admin', 'beadHouseInfo:del']
       },
       rules: {
-        beadHouseName: [
-          { required: true, message: '养老院名称不能为空', trigger: 'blur' }
-        ],
         deanName: [
           { required: true, message: '院长名称不能为空', trigger: 'blur' }
         ],
-        beadHouseEvaluate: [
-          { required: true, message: '养老院评价不能为空', trigger: 'blur' }
-        ],
         bedNum: [
           { required: true, message: '床位数不能为空', trigger: 'blur' }
-        ],
-        beadPhone: [
-          { required: true, message: '联系电话不能为空', trigger: 'blur' }
         ]
       }    }
   },
