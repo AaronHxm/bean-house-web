@@ -13,37 +13,37 @@
           <el-form-item label="床位数" prop="bedNum">
             <el-input v-model="form.bedNum" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院名称">
+          <el-form-item label="名称">
             <el-input v-model="form.beanName" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="描述">
             <el-input v-model="form.remarks" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院接待时间">
+          <el-form-item label="接待时间">
             <el-input v-model="form.beanTime" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院电话">
+          <el-form-item label="联系电话">
             <el-input v-model="form.beanTel" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院位置">
+
+          <el-form-item label="所在地区">
+            <el-cascader
+              size="large"
+              :options="options"
+              v-model="selectedOptions"
+              @change="handleChange" style="width: 370px;">
+            </el-cascader>
+          </el-form-item>
+          <el-form-item label="位置">
             <el-input v-model="form.beanAddress" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院省">
-            <el-input v-model="form.beanProvince" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="养老院市">
-            <el-input v-model="form.beanCity" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="养老院区">
-            <el-input v-model="form.beanArea" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="养老院医护数量">
+          <el-form-item label="医护数量">
             <el-input v-model="form.nurseNum" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院描述">
+          <el-form-item label="描述">
             <el-input v-model="form.beanDesc" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="养老院logo">
+          <el-form-item label="logo">
             <el-input v-model="form.beanLogo" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="评价">
@@ -98,6 +98,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
+import {regionData,CodeToText} from "element-china-area-data";
 
 const defaultForm = { deanId: null, deanName: null, bedNum: null, createBy: null, createTime: null, updateBy: null, updateTime: null, id: null, beanName: null, tenantId: null, status: null, remarks: null, beanTime: null, beanTel: null, beanAddress: null, lng: null, lat: null, beanProvince: null, beanCity: null, beanArea: null, nurseNum: null, beanDesc: null, beanLogo: null, beanHouseEvaluate: null }
 export default {
@@ -109,6 +110,8 @@ export default {
   },
   data() {
     return {
+      options: regionData,
+      selectedOptions: [],
       permission: {
         add: ['admin', 'beadHouseInfo:add'],
         edit: ['admin', 'beadHouseInfo:edit'],
@@ -124,6 +127,14 @@ export default {
       }    }
   },
   methods: {
+    handleChange(value) {
+
+      this.form.beanProvince = CodeToText[this.selectedOptions[0]]
+      this.form.beanCity = CodeToText[this.selectedOptions[1]]
+      this.form.beanArea = CodeToText[this.selectedOptions[2]]
+
+
+    },
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
       return true
